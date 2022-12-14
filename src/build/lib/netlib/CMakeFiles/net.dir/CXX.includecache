@@ -6,11 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/zyp/server/server/src/lib/netlib/socket.cpp
-socket.h
-/home/zyp/server/server/src/lib/netlib/socket.h
-
-lib/include/socket.h
+../lib/include/socket.h
 unistd.h
 -
 sys/types.h
@@ -53,4 +49,8 @@ poll.h
 -
 thread
 -
+
+/home/zyp/server/server/src/lib/netlib/socket.cpp
+socket.h
+/home/zyp/server/server/src/lib/netlib/socket.h
 

@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/zyp/socket/mysocket/src
+CMAKE_SOURCE_DIR = /home/zyp/server/server/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/zyp/socket/mysocket/src
+CMAKE_BINARY_DIR = /home/zyp/server/server/src/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/zyp/socket/mysocket/src && $(CMAKE_COMMAND) -E cmake_progress_start /home/zyp/socket/mysocket/src/CMakeFiles /home/zyp/socket/mysocket/src/lib/CMakeFiles/progress.marks
-	cd /home/zyp/socket/mysocket/src && $(MAKE) -f CMakeFiles/Makefile2 lib/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/zyp/socket/mysocket/src/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zyp/server/server/src/build/CMakeFiles /home/zyp/server/server/src/build/CMakeFiles/progress.marks
+	$(MAKE) -f CMakeFiles/Makefile2 all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zyp/server/server/src/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/zyp/socket/mysocket/src && $(MAKE) -f CMakeFiles/Makefile2 lib/clean
+	$(MAKE) -f CMakeFiles/Makefile2 clean
 .PHONY : clean
 
 # The main clean target
@@ -97,18 +97,44 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/zyp/socket/mysocket/src && $(MAKE) -f CMakeFiles/Makefile2 lib/preinstall
+	$(MAKE) -f CMakeFiles/Makefile2 preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/zyp/socket/mysocket/src && $(MAKE) -f CMakeFiles/Makefile2 lib/preinstall
+	$(MAKE) -f CMakeFiles/Makefile2 preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/zyp/socket/mysocket/src && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
+
+#=============================================================================
+# Target rules for targets named net
+
+# Build rule for target.
+net: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 net
+.PHONY : net
+
+# fast build rule for target.
+net/fast:
+	$(MAKE) -f lib/netlib/CMakeFiles/net.dir/build.make lib/netlib/CMakeFiles/net.dir/build
+.PHONY : net/fast
+
+#=============================================================================
+# Target rules for targets named testserver
+
+# Build rule for target.
+testserver: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testserver
+.PHONY : testserver
+
+# fast build rule for target.
+testserver/fast:
+	$(MAKE) -f server/CMakeFiles/testserver.dir/build.make server/CMakeFiles/testserver.dir/build
+.PHONY : testserver/fast
 
 # Help Target
 help:
@@ -118,6 +144,8 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... net"
+	@echo "... testserver"
 .PHONY : help
 
 
@@ -129,6 +157,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/zyp/socket/mysocket/src && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

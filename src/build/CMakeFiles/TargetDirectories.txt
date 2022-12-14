@@ -1,0 +1,10 @@
+/home/zyp/server/server/src/build/CMakeFiles/rebuild_cache.dir
+/home/zyp/server/server/src/build/CMakeFiles/edit_cache.dir
+/home/zyp/server/server/src/build/lib/CMakeFiles/rebuild_cache.dir
+/home/zyp/server/server/src/build/lib/CMakeFiles/edit_cache.dir
+/home/zyp/server/server/src/build/lib/netlib/CMakeFiles/rebuild_cache.dir
+/home/zyp/server/server/src/build/lib/netlib/CMakeFiles/edit_cache.dir
+/home/zyp/server/server/src/build/lib/netlib/CMakeFiles/net.dir
+/home/zyp/server/server/src/build/server/CMakeFiles/edit_cache.dir
+/home/zyp/server/server/src/build/server/CMakeFiles/rebuild_cache.dir
+/home/zyp/server/server/src/build/server/CMakeFiles/testserver.dir

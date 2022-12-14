@@ -4,13 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/zyp/server/server/src/lib/netlib/socket.cpp" "/home/zyp/server/server/src/lib/netlib/CMakeFiles/net.dir/socket.cpp.o"
+  "/home/zyp/server/server/src/lib/netlib/socket.cpp" "/home/zyp/server/server/src/build/lib/netlib/CMakeFiles/net.dir/socket.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "lib/include"
+  "../lib/include"
   )
 
 # Targets to which this target links.

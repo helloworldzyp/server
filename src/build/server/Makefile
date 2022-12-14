@@ -51,21 +51,10 @@ EQUALS = =
 CMAKE_SOURCE_DIR = /home/zyp/server/server/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/zyp/server/server/src
+CMAKE_BINARY_DIR = /home/zyp/server/server/src/build
 
 #=============================================================================
 # Targets provided globally by CMake.
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
 
 # Special rule for the target edit_cache
 edit_cache:
@@ -78,16 +67,27 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
 # The main all target
 all: cmake_check_build_system
-	cd /home/zyp/server/server/src && $(CMAKE_COMMAND) -E cmake_progress_start /home/zyp/server/server/src/CMakeFiles /home/zyp/server/server/src/lib/netlib/CMakeFiles/progress.marks
-	cd /home/zyp/server/server/src && $(MAKE) -f CMakeFiles/Makefile2 lib/netlib/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/zyp/server/server/src/CMakeFiles 0
+	cd /home/zyp/server/server/src/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/zyp/server/server/src/build/CMakeFiles /home/zyp/server/server/src/build/server/CMakeFiles/progress.marks
+	cd /home/zyp/server/server/src/build && $(MAKE) -f CMakeFiles/Makefile2 server/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zyp/server/server/src/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/zyp/server/server/src && $(MAKE) -f CMakeFiles/Makefile2 lib/netlib/clean
+	cd /home/zyp/server/server/src/build && $(MAKE) -f CMakeFiles/Makefile2 server/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,60 +97,60 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/zyp/server/server/src && $(MAKE) -f CMakeFiles/Makefile2 lib/netlib/preinstall
+	cd /home/zyp/server/server/src/build && $(MAKE) -f CMakeFiles/Makefile2 server/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/zyp/server/server/src && $(MAKE) -f CMakeFiles/Makefile2 lib/netlib/preinstall
+	cd /home/zyp/server/server/src/build && $(MAKE) -f CMakeFiles/Makefile2 server/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/zyp/server/server/src && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/zyp/server/server/src/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
-lib/netlib/CMakeFiles/net.dir/rule:
-	cd /home/zyp/server/server/src && $(MAKE) -f CMakeFiles/Makefile2 lib/netlib/CMakeFiles/net.dir/rule
-.PHONY : lib/netlib/CMakeFiles/net.dir/rule
+server/CMakeFiles/testserver.dir/rule:
+	cd /home/zyp/server/server/src/build && $(MAKE) -f CMakeFiles/Makefile2 server/CMakeFiles/testserver.dir/rule
+.PHONY : server/CMakeFiles/testserver.dir/rule
 
 # Convenience name for target.
-net: lib/netlib/CMakeFiles/net.dir/rule
+testserver: server/CMakeFiles/testserver.dir/rule
 
-.PHONY : net
+.PHONY : testserver
 
 # fast build rule for target.
-net/fast:
-	cd /home/zyp/server/server/src && $(MAKE) -f lib/netlib/CMakeFiles/net.dir/build.make lib/netlib/CMakeFiles/net.dir/build
-.PHONY : net/fast
+testserver/fast:
+	cd /home/zyp/server/server/src/build && $(MAKE) -f server/CMakeFiles/testserver.dir/build.make server/CMakeFiles/testserver.dir/build
+.PHONY : testserver/fast
 
-socket.o: socket.cpp.o
+main.o: main.cpp.o
 
-.PHONY : socket.o
+.PHONY : main.o
 
 # target to build an object file
-socket.cpp.o:
-	cd /home/zyp/server/server/src && $(MAKE) -f lib/netlib/CMakeFiles/net.dir/build.make lib/netlib/CMakeFiles/net.dir/socket.cpp.o
-.PHONY : socket.cpp.o
+main.cpp.o:
+	cd /home/zyp/server/server/src/build && $(MAKE) -f server/CMakeFiles/testserver.dir/build.make server/CMakeFiles/testserver.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-socket.i: socket.cpp.i
+main.i: main.cpp.i
 
-.PHONY : socket.i
+.PHONY : main.i
 
 # target to preprocess a source file
-socket.cpp.i:
-	cd /home/zyp/server/server/src && $(MAKE) -f lib/netlib/CMakeFiles/net.dir/build.make lib/netlib/CMakeFiles/net.dir/socket.cpp.i
-.PHONY : socket.cpp.i
+main.cpp.i:
+	cd /home/zyp/server/server/src/build && $(MAKE) -f server/CMakeFiles/testserver.dir/build.make server/CMakeFiles/testserver.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-socket.s: socket.cpp.s
+main.s: main.cpp.s
 
-.PHONY : socket.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-socket.cpp.s:
-	cd /home/zyp/server/server/src && $(MAKE) -f lib/netlib/CMakeFiles/net.dir/build.make lib/netlib/CMakeFiles/net.dir/socket.cpp.s
-.PHONY : socket.cpp.s
+main.cpp.s:
+	cd /home/zyp/server/server/src/build && $(MAKE) -f server/CMakeFiles/testserver.dir/build.make server/CMakeFiles/testserver.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -158,12 +158,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... net"
-	@echo "... socket.o"
-	@echo "... socket.i"
-	@echo "... socket.s"
+	@echo "... rebuild_cache"
+	@echo "... testserver"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 
@@ -175,6 +175,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/zyp/server/server/src && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/zyp/server/server/src/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
