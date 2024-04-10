@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/zyp/code/build",
+  "command": "/usr/bin/g++  -I/home/zyp/code/include  -g -O0 -g -o CMakeFiles/client.dir/src/client/client.cpp.o -c /home/zyp/code/src/client/client.cpp",
+  "file": "/home/zyp/code/src/client/client.cpp"
+},
+{
+  "directory": "/home/zyp/code/build",
+  "command": "/usr/bin/g++  -I/home/zyp/code/include  -g -O0 -g -o CMakeFiles/server.dir/src/server/server.cpp.o -c /home/zyp/code/src/server/server.cpp",
+  "file": "/home/zyp/code/src/server/server.cpp"
+},
+{
+  "directory": "/home/zyp/code/build",
+  "command": "/usr/bin/g++  -I/home/zyp/code/include  -g -O0 -g -o CMakeFiles/test.dir/src/test/main.cpp.o -c /home/zyp/code/src/test/main.cpp",
+  "file": "/home/zyp/code/src/test/main.cpp"
+}
+]
