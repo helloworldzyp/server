@@ -65,9 +65,9 @@ void test_clock() {
 
     // 设置定时器参数（2秒后开始，每5秒触发一次）
     struct itimerspec timer_spec;
-    timer_spec.it_value.tv_sec = 100;
+    timer_spec.it_value.tv_sec = 1;
     timer_spec.it_value.tv_nsec = 0;
-    timer_spec.it_interval.tv_sec = 15;
+    timer_spec.it_interval.tv_sec = 5;
     timer_spec.it_interval.tv_nsec = 0;
 
     // 启动定时器
@@ -106,6 +106,21 @@ void test_clock() {
                 }
                 Channel *callChan = (Channel*)events[i].data.ptr;
                 callChan->handleEvent();
+
+                // struct itimerspec timer_spec;
+                // timer_spec.it_value.tv_sec = 0;
+                // timer_spec.it_value.tv_nsec = 0;
+                // timer_spec.it_interval.tv_sec = 0;
+                // timer_spec.it_interval.tv_nsec = 0;
+
+                // // 启动定时器
+                // if (timerfd_settime(timer_fd, 0, &timer_spec, NULL) == -1)
+                // {
+                //     perror("timerfd_settime");
+                //     close(epoll_fd);
+                //     close(timer_fd);
+                //     exit(EXIT_FAILURE);
+                // }
                 printf("Timer expired. Number of expirations: %llu\n", (unsigned long long)expirations);
             }
         }
