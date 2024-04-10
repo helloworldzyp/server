@@ -1,5 +1,0 @@
-/home/zyp/code/build/CMakeFiles/client.dir
-/home/zyp/code/build/CMakeFiles/server.dir
-/home/zyp/code/build/CMakeFiles/test.dir
-/home/zyp/code/build/CMakeFiles/edit_cache.dir
-/home/zyp/code/build/CMakeFiles/rebuild_cache.dir
