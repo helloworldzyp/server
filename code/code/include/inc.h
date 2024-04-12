@@ -14,8 +14,10 @@
 #include <netdb.h>
 #include <net/if.h>
 #define PORT  8899
-#define ADDR  "127.0.0.1"
+#define ADDR  "127.0.0.1"?
 
+
+////
 
 int readn(int s,char *buff,int len){
     int curCnt = len;
