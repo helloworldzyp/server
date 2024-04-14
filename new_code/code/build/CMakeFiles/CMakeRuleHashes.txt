@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+3bc30e9a68c286c4479f2ad99d2bb448 msg.pb.h
