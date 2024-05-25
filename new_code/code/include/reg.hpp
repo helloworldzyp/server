@@ -8,6 +8,7 @@ typedef struct tagCmdMessageInfo{
 } CmdMessageInfo, *PCmdMessageInfo;
 typedef std::map<uint32_t, PCmdMessageInfo> commandMap;
 commandMap g_commandMap;
+
 ///////////////////////////handle msg///////////////////////////////
 void HandleLogin(const void *buf, int len){
     MyLoginMsg *msg = (MyLoginMsg*)buf;
@@ -20,7 +21,7 @@ void HandleChat(const void *buf, int len){
 }
 ///////////////////////////////////////////////////////////////////
 
-//消息处理函数
+//注册消息函数
 void RegFunc(uint32_t msgID, ::google::protobuf::Message *message, HandleFunc func){
     CmdMessageInfo *msgInfo = new CmdMessageInfo;
     msgInfo->pFunc = func;
