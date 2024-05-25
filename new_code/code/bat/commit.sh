@@ -1,5 +1,5 @@
 #!/bin/bash
-
+####
 # 检查未提交的更改
 if git diff-index --quiet HEAD --; then
     echo "没有更改需要提交。"
