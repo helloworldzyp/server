@@ -17,8 +17,20 @@
 #include<string>
 #include<vector>
 #include <algorithm>
+#include"msg.pb.h"
 
 #define CHECK_RET(x) if (x < 0) exit(1)
+
+///////////////////////proto //////////////
+struct MsgHead{
+    int dataLen;
+    int msgID;
+};
+
+enum MsgType{
+    eMsgType_login,
+    eMsgType_login_ret,
+};
 
 
 void FullAddress(sockaddr_in &addr,std::string ip,uint16_t port){
@@ -112,35 +124,21 @@ ssize_t Writen(int fd, const void *buf, size_t n) {
     return n;
 }
 
+char g_sendBuf[64 * 1024] = {0};
+
+void BuildMsgHead(int msgID,int len){
+    MsgHead *head = (MsgHead*)g_sendBuf;
+    head->dataLen = len;
+    head->msgID = msgID;
+}
+
+std::string BuildLoginMsg(std::string name, uint16_t age){
+    MyLoginMsg loginMsg;
+    loginMsg.set_name(name);
+    loginMsg.set_age(age);
+    std::string sendStr = loginMsg.SerializeAsString();
+    BuildMsgHead(eMsgType_login,sendStr.size());
+    return std::string(g_sendBuf,sizeof(MsgHead)) + sendStr;
+}
 
 
-
-
-///////////////////////proto //////////////
-
-struct MsgHead{
-    int dataLen;
-    int cmd;
-};
-
-enum MsgType{
-    eMsgType_login,
-    eMsgType_login_ret,
-};
-
-struct LoginMsg : public MsgHead{
-    LoginMsg(){
-        age = 0;
-        cmd =  eMsgType_login;
-    }
-    char name[125];
-    int age;
-};
-
-struct LoginRetMsg : public MsgHead{
-    LoginRetMsg(){
-        ret = 0;
-        cmd = eMsgType_login_ret;
-    }
-    int ret;
-};

@@ -24,14 +24,12 @@ int main(){
 	// msg.age = 2;
 	// strcpy(msg.name,"qiqi");
 	// msg.dataLen = sizeof(msg);
-	MyLoginMsg msg;
-	auto haed = msg.mutable_head();
-	haed->set_cmd(123);
-	msg.set_age(1);
-	msg.set_name("123");
-	std::string sendStr = msg.SerializeAsString();
-	std::cout<<"sizeof(logingMsg)="<<sizeof(MyLoginMsg)<<std::endl;
-	std::cout<<"sizeof(sendStr)="<<sendStr.size()<<std::endl;
+	// MyLoginMsg msg;
+	// msg.set_age(1);
+	// msg.set_name("123");
+	// std::string sendStr = msg.SerializeAsString();
+	// std::cout<<"sizeof(logingMsg)="<<sizeof(MyLoginMsg)<<std::endl;
+	// std::cout<<"sizeof(sendStr)="<<sendStr.size()<<std::endl;
 
 	// int realLen = sizeof(MyLoginMsg) - sizeof(MyMsgHead);
 	// std::cout<<"send msg real length "<<realLen<<std::endl;
@@ -47,6 +45,8 @@ int main(){
 	// }
 
 	// std::cout<<"send msg length "<<sendStr.length() <<"sendstr size "<<sendStr.size()<<std::endl;
+
+	std::string sendStr = BuildLoginMsg("test",99);
 	int ret  = send(s,sendStr.c_str(),sendStr.size(),0);
     std::cout<<"client send len="<<ret<<std::endl;
 }

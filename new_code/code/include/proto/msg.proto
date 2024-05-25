@@ -1,12 +1,6 @@
 syntax = "proto3";
 
-message MyMsgHead {
-    int32  cmd = 1;
-    int32 dataLen = 2;
-}
-
 message MyLoginMsg {
-    MyMsgHead head = 1;
-    string name = 2;
-    int32 age = 3;
+    string name = 1;
+    int32 age = 2;
 }

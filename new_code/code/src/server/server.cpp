@@ -67,11 +67,29 @@ int main(){
 				char buff[1024] = {0};
 				// MyMsgHead msg;
 				// MyMsgHead *head;
-				int ret = recv(cScoket, buff, 1024, 0);
-				std::cout<<"recv len "<<ret<<std::endl;
-				MyLoginMsg tem;
-				tem.ParseFromString(buff);
-				std::cout<<"test "<<tem.name()<<" age "<<tem.head().cmd()<<std::endl;
+				// int ret = recv(cScoket, buff, 1024, 0);
+				{
+					int n = Readn(cScoket, buff, sizeof(MsgHead));
+					if (n == sizeof(MsgHead))
+					{
+						MsgHead *head = (MsgHead *)buff;
+						if (head->msgID == eMsgType_login)
+						{
+							int msgLen = head->dataLen;
+							n = Readn(cScoket, buff, msgLen);
+							if (n == msgLen)
+							{
+								MyLoginMsg tmp;
+								tmp.ParseFromString(buff);
+								std::cout << "name= " << tmp.name() << " age= " << tmp.age() << std::endl;
+							}
+						}
+					}
+				}
+				// std::cout<<"recv len "<<ret<<std::endl;
+				// MyLoginMsg tem;
+				// tem.ParseFromString(buff);
+				// std::cout<<"test "<<tem.name()<<" age "<<tem.name()<<std::endl;
 				if (ret)
 				{
 					// head = (MyMsgHead *)buff;
