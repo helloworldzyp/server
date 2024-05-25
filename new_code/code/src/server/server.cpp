@@ -1,8 +1,9 @@
-#include"inc.h"
-#include"msg.pb.h"
+#include"buildmsg.hpp"
+#include"reg.hpp"
 #define INVAILD_NUM  -1
 
 int main(){
+	init();
     struct sockaddr_in local;
 	int sScoket = -1;
 	int cScoket = -1;
@@ -14,7 +15,6 @@ int main(){
 	sScoket = Socket();
 	CHECK_RET(sScoket);
 	std::cout<<"$$$$$ server s = "<<sScoket<<std::endl;
-
 
 	int optval = 1;
 	ret = setsockopt(sScoket, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
@@ -60,54 +60,21 @@ int main(){
     		std::cout<<"Accepted connection from " << client_ip_str<< " port "<<ntohs(client.sin_port)<<std::endl;
 			fdVec.push_back(cScoket);
 		}
-		for (auto v : fdVec)
-		{
-			if (FD_ISSET(v, &readSet))
-			{
-				char buff[1024] = {0};
-				// MyMsgHead msg;
-				// MyMsgHead *head;
-				// int ret = recv(cScoket, buff, 1024, 0);
-				{
-					int n = Readn(cScoket, buff, sizeof(MsgHead));
-					if (n == sizeof(MsgHead))
-					{
-						MsgHead *head = (MsgHead *)buff;
-						if (head->msgID == eMsgType_login)
-						{
-							int msgLen = head->dataLen;
-							n = Readn(cScoket, buff, msgLen);
-							if (n == msgLen)
-							{
-								MyLoginMsg tmp;
-								tmp.ParseFromString(buff);
-								std::cout << "name= " << tmp.name() << " age= " << tmp.age() << std::endl;
-							}
+		for (auto v : fdVec){
+			if (FD_ISSET(v, &readSet)){
+				char buff[64 * 1024] = {0};
+				int ret = Readn(cScoket, buff, sizeof(MsgHead));
+				if (ret == sizeof(MsgHead)){
+					MsgHead *head = (MsgHead *)buff;
+					int tmpMsgLen = head->dataLen;
+					int tmpMsgID = head->msgID;{
+						ret = Readn(cScoket, buff, tmpMsgLen);
+						if (ret == tmpMsgLen){
+							HandMsg(tmpMsgID, buff);
 						}
 					}
 				}
-				// std::cout<<"recv len "<<ret<<std::endl;
-				// MyLoginMsg tem;
-				// tem.ParseFromString(buff);
-				// std::cout<<"test "<<tem.name()<<" age "<<tem.name()<<std::endl;
-				if (ret)
-				{
-					// head = (MyMsgHead *)buff;
-					// if (head->cmd() == eMsgType_login)
-					// {
-					// 	int ret = recv(cScoket, buff + sizeof(MyMsgHead), sizeof(MyLoginMsg), 0);
-					// 	if (ret)
-					// 	{
-					// 		MyLoginMsg *msg = (MyLoginMsg *)buff;
-					// 		std::cout << "recv client msg name 123 " << msg->name() << "age = " << msg->age() << std::endl;
-					// 		LoginRetMsg retMsg;
-					// 		retMsg.ret = 0;
-					// 		retMsg.dataLen = sizeof(LoginRetMsg);
-					// 		send(cScoket, (char *)&retMsg, sizeof(retMsg), 0);
-					// 	}
-					// }
-				}
-				else if (ret == 0){
+				if (ret == 0){
 					removeVec.push_back(cScoket);
 					close(cScoket);
 					std::cout<<"close client "<<cScoket<<std::endl;
@@ -121,36 +88,5 @@ int main(){
 			fdVec.erase(it);
 		}
 	}
-
-
-
-	// cScoket = Accept(sScoket, (sockaddr*)&client, &len);
-	// CHECK_RET(cScoket);
-
-	// sockaddr_in client_addr;
-	// char client_ip[INET_ADDRSTRLEN] = {0};
-	// const char *client_ip_str = inet_ntop(AF_INET, &client.sin_addr, client_ip, INET_ADDRSTRLEN);
-    // std::cout<<"Accepted connection from " << client_ip_str<< " port "<<ntohs(client_addr.sin_port)<<std::endl;
-    
-	// {
-	// 	char buff[1024] = {0};
-	// 	MsgHead *head;
-	// 	int ret = recv(cScoket,buff,sizeof(MsgHead),0);
-	// 	if (ret){
-	// 		head = (MsgHead*)buff;
-	// 		if (head->cmd == eMsgType_login){
-	// 			int ret = recv(cScoket,buff+sizeof(MsgHead),sizeof(LoginMsg),0);
-	// 			if (ret){
-	// 				LoginMsg *msg = (LoginMsg*)buff;
-	// 				std::cout<<"recv client msg name "<<msg->name<<"age = "<<msg->age<<std::endl;
-	// 				LoginRetMsg retMsg;
-	// 				retMsg.ret = 0;
-	// 				retMsg.dataLen = sizeof (LoginRetMsg);
-	// 				send(cScoket,(char*)&retMsg,sizeof(retMsg),0);
-	// 			}
-	// 		}
-	// 	}
-		
-	// }
 	std::cout<<"server1 "<<std::endl;
 }

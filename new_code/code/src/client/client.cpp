@@ -1,9 +1,9 @@
-#include"inc.h"
+#include"buildmsg.hpp"
+#include"reg.hpp"
 #include"msg.pb.h"
 
-
 int main(){
-
+	init();
     struct sockaddr_in peer;
 	int s;
 	int rc;
@@ -20,33 +20,10 @@ int main(){
 	std::cout<<"$$$$$ client s1 = "<<s<<std::endl;
 	CHECK_RET(rc);
 
-	// LoginMsg msg;
-	// msg.age = 2;
-	// strcpy(msg.name,"qiqi");
-	// msg.dataLen = sizeof(msg);
-	// MyLoginMsg msg;
-	// msg.set_age(1);
-	// msg.set_name("123");
-	// std::string sendStr = msg.SerializeAsString();
-	// std::cout<<"sizeof(logingMsg)="<<sizeof(MyLoginMsg)<<std::endl;
-	// std::cout<<"sizeof(sendStr)="<<sendStr.size()<<std::endl;
-
-	// int realLen = sizeof(MyLoginMsg) - sizeof(MyMsgHead);
-	// std::cout<<"send msg real length "<<realLen<<std::endl;
-	// head->set_datalen(realLen);
-
-	// char buff[1024] = {0};
-	// {
-
-	// 	strcpy(buff,sendStr.data());
-	// 	MyLoginMsg tem;
-	// 	tem.ParseFromString(buff);
-	// 	std::cout<<"test "<<tem.name()<<" age "<<tem.head().cmd()<<std::endl;
-	// }
-
-	// std::cout<<"send msg length "<<sendStr.length() <<"sendstr size "<<sendStr.size()<<std::endl;
-
 	std::string sendStr = BuildLoginMsg("test",99);
 	int ret  = send(s,sendStr.c_str(),sendStr.size(),0);
+    std::cout<<"client send len="<<ret<<std::endl;
+	sendStr = BuildChatMsg("this is chat msg");
+	ret  = send(s,sendStr.c_str(),sendStr.size(),0);
     std::cout<<"client send len="<<ret<<std::endl;
 }
