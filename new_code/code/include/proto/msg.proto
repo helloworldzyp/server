@@ -8,3 +8,7 @@ message MyLoginMsg {
 message ChatMsg {
     string chat = 1;
 }
+
+message MutilChatMsg{
+    repeated string chat = 1;
+}

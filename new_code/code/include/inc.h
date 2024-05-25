@@ -18,11 +18,13 @@
 #include<map>
 #include <algorithm>
 #include"msg.pb.h"
+#include"buildmsg.hpp"
 
 #define CHECK_RET(x) if (x < 0) exit(1)
 
 char g_sendBuf[64 * 1024] = {0};
 char g_recvBuf[64 * 1024] = {0};
+
 
 
 void FullAddress(sockaddr_in &addr,std::string ip,uint16_t port){

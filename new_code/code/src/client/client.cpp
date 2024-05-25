@@ -20,10 +20,17 @@ int main(){
 	std::cout<<"$$$$$ client s1 = "<<s<<std::endl;
 	CHECK_RET(rc);
 
-	std::string sendStr = BuildLoginMsg("test",99);
-	int ret  = send(s,sendStr.c_str(),sendStr.size(),0);
-    std::cout<<"client send len="<<ret<<std::endl;
-	sendStr = BuildChatMsg("this is chat msg");
-	ret  = send(s,sendStr.c_str(),sendStr.size(),0);
-    std::cout<<"client send len="<<ret<<std::endl;
+	for (int i = 0; i < 100; i++){
+		std::string sendStr = BuildLoginMsg("test", 99);
+		int ret = send(s, sendStr.c_str(), sendStr.size(), 0);
+		// std::cout << "client send len=" << ret << std::endl;
+		sendStr = BuildChatMsg("this is chat msg");
+		ret = send(s, sendStr.c_str(), sendStr.size(), 0);
+		// std::cout << "client send len=" << ret << std::endl;
+		std::cout << "i = " << i << std::endl;
+		usleep(100000);
+		std::vector<std::string> mutilChat = {"123", "test", "asd"};
+		sendStr = BuildMutilChatMsg(mutilChat);
+		ret = send(s, sendStr.c_str(), sendStr.size(), 0);
+	}
 }

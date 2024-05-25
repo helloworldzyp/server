@@ -62,18 +62,20 @@ int main(){
 		}
 		for (auto v : fdVec){
 			if (FD_ISSET(v, &readSet)){
-				char buff[64 * 1024] = {0};
-				int ret = Readn(cScoket, buff, sizeof(MsgHead));
-				if (ret == sizeof(MsgHead)){
-					MsgHead *head = (MsgHead *)buff;
-					int tmpMsgLen = head->dataLen;
-					int tmpMsgID = head->msgID;{
-						ret = Readn(cScoket, buff, tmpMsgLen);
-						if (ret == tmpMsgLen){
-							HandMsg(tmpMsgID, buff);
-						}
-					}
-				}
+				// char buff[64 * 1024] = {0};
+				// int ret = Readn(cScoket, buff, sizeof(MsgHead));
+				// if (ret == sizeof(MsgHead)){
+				// 	MsgHead *head = (MsgHead *)buff;
+				// 	int tmpMsgLen = head->dataLen;
+				// 	int tmpMsgID = head->msgID;{
+				// 		memset(buff,0,sizeof(buff));
+				// 		ret = Readn(cScoket, buff, tmpMsgLen);
+				// 		if (ret == tmpMsgLen){
+				// 			HandMsg(tmpMsgID, buff);
+				// 		}
+				// 	}
+				// }
+				HandMsg(cScoket);
 				if (ret == 0){
 					removeVec.push_back(cScoket);
 					close(cScoket);

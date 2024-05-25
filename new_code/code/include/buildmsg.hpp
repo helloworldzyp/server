@@ -7,10 +7,12 @@ struct MsgHead{
     int msgID;
 };
 
+int g_headMsgSize = sizeof(MsgHead);
 enum MsgType{
     eMsgType_login = 1000,
     eMsgType_login_ret,
     eMsgType_chat,
+    eMsgType_mutil_chat,
 };
 
 void BuildMsgHead(int msgID,int len){
@@ -33,5 +35,15 @@ std::string BuildChatMsg(std::string chat){
     msg.set_chat(chat);
     std::string sendStr = msg.SerializeAsString();
     BuildMsgHead(eMsgType_chat,sendStr.size());
+    return std::string(g_sendBuf,sizeof(MsgHead)) + sendStr;
+}
+
+std::string BuildMutilChatMsg(std::vector<std::string> chatVec){
+    MutilChatMsg msg;
+    for(auto v : chatVec){
+       msg.add_chat(v);
+    }
+    std::string sendStr = msg.SerializeAsString();
+    BuildMsgHead(eMsgType_mutil_chat,sendStr.size());
     return std::string(g_sendBuf,sizeof(MsgHead)) + sendStr;
 }

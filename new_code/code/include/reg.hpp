@@ -19,6 +19,17 @@ void HandleChat(const void *buf, int len){
     ChatMsg *msg = (ChatMsg*)buf;
     std::cout<<"chat msg is:"<<msg->chat()<<std::endl;
 }
+
+void HandleMutilChat(const void *buf, int len){
+    MutilChatMsg *msg = (MutilChatMsg*)buf;
+    std::string tempStr;
+    for (int i = 0; i < msg->chat_size(); i++){
+       tempStr.append(msg->chat(i)).append("  ");
+    }
+    std::cout<<"HandleMutilChat str = "<<tempStr<<std::endl;
+}
+
+
 ///////////////////////////////////////////////////////////////////
 
 //注册消息函数
@@ -32,6 +43,7 @@ void RegFunc(uint32_t msgID, ::google::protobuf::Message *message, HandleFunc fu
 void init(){
     RegFunc(eMsgType_login,new MyLoginMsg,HandleLogin);
     RegFunc(eMsgType_chat,new ChatMsg,HandleChat);
+    RegFunc(eMsgType_mutil_chat,new MutilChatMsg,HandleMutilChat);
 }
 
 //统一消息处理入口
@@ -43,4 +55,26 @@ void HandMsg(uint32_t msgID,std::string buf){
     }
 }
 
+void HandMsg(uint32_t msgID,char* buf){
+    auto it = g_commandMap.find(msgID);
+    if (it != g_commandMap.end()){
+        it->second->pMessage->ParseFromString(buf);
+        it->second->pFunc(it->second->pMessage,0);       
+    }
+}
 
+void HandMsg(int cScoket){
+    char buff[64 * 1024] = {0};
+    int ret = Readn(cScoket, buff, sizeof(MsgHead));
+    if (ret == g_headMsgSize){
+        MsgHead *head = (MsgHead *)buff;
+        int tmpMsgLen = head->dataLen;
+        int tmpMsgID = head->msgID;{
+            memset(buff, 0, sizeof(buff));
+            ret = Readn(cScoket, buff, tmpMsgLen);
+            if (ret == tmpMsgLen){
+                HandMsg(tmpMsgID, buff);
+            }
+        }
+    }
+}
