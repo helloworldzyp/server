@@ -14,8 +14,10 @@ int main(){
 	peer.sin_addr.s_addr = inet_addr( "127.0.0.1" );
 
 	s = Socket();
+	std::cout<<"$$$$$ client s = "<<s<<std::endl;
 	CHECK_RET(s);
 	rc = Connect(s,peer);
+	std::cout<<"$$$$$ client s1 = "<<s<<std::endl;
 	CHECK_RET(rc);
 
 	// LoginMsg msg;

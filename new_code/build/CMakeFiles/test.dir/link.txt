@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/test.dir/src/test/main.cpp.o -o /home/zyp/git/server/new_code/code/bin/test  -lpthread 

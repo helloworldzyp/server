@@ -13,6 +13,8 @@ int main(){
 	local.sin_addr.s_addr = htons(INADDR_ANY);
 	sScoket = Socket();
 	CHECK_RET(sScoket);
+	std::cout<<"$$$$$ server s = "<<sScoket<<std::endl;
+
 
 	int optval = 1;
 	ret = setsockopt(sScoket, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));

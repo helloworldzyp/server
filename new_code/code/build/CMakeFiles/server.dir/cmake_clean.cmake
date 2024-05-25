@@ -2,7 +2,9 @@ file(REMOVE_RECURSE
   "../bin/server"
   "../bin/server.pdb"
   "CMakeFiles/server.dir/msg.pb.cc.o"
+  "CMakeFiles/server.dir/msg.pb.cc.o.d"
   "CMakeFiles/server.dir/src/server/server.cpp.o"
+  "CMakeFiles/server.dir/src/server/server.cpp.o.d"
   "msg.pb.cc"
   "msg.pb.h"
 )

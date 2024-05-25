@@ -1,0 +1,5 @@
+/home/zyp/git/server/new_code/build/CMakeFiles/client.dir
+/home/zyp/git/server/new_code/build/CMakeFiles/server.dir
+/home/zyp/git/server/new_code/build/CMakeFiles/test.dir
+/home/zyp/git/server/new_code/build/CMakeFiles/edit_cache.dir
+/home/zyp/git/server/new_code/build/CMakeFiles/rebuild_cache.dir

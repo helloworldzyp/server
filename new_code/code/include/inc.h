@@ -67,6 +67,53 @@ int Connect(int soc,sockaddr_in addr){
     return ret;
 }
 
+// 从文件描述符fd中读取n字节到缓冲区buf中
+ssize_t Readn(int fd, void *buf, size_t n) {
+    size_t nleft = n;       // 剩余的字节数
+    ssize_t nread;          // 实际读取到的字节数
+    char *ptr = (char*)buf; // 缓冲区指针
+
+    while (nleft > 0) {
+        if ((nread = read(fd, ptr, nleft)) < 0) {
+            if (errno == EINTR) {
+                nread = 0;   // 被信号中断，重新读取
+            } else {
+                return -1;   // 读取错误
+            }
+        } else if (nread == 0) {
+            break;           // EOF
+        }
+
+        nleft -= nread;
+        ptr += nread;
+    }
+
+    return (n - nleft);      // 返回实际读取的字节数
+}
+
+// 将n字节的数据从缓冲区buf写入文件描述符fd中
+ssize_t Writen(int fd, const void *buf, size_t n) {
+    size_t nleft = n;          // 剩余的字节数
+    ssize_t nwritten;          // 实际写入的字节数
+    const char *ptr = (const char*)buf; // 缓冲区指针
+
+    while (nleft > 0) {
+        if ((nwritten = write(fd, ptr, nleft)) <= 0) {
+            if (nwritten < 0 && errno == EINTR) {
+                nwritten = 0;   // 被信号中断，重新写入
+            } else {
+                return -1;      // 写入错误
+            }
+        }
+
+        nleft -= nwritten;
+        ptr += nwritten;
+    }
+    return n;
+}
+
+
+
 
 
 ///////////////////////proto //////////////

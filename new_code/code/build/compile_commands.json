@@ -1,27 +1,27 @@
 [
 {
-  "directory": "/home/zyp/src/code/build",
-  "command": "/usr/bin/g++   -I/home/zyp/src/code/build -I/home/zyp/src/code/include -I/home/zyp/src/code/include/proto  -g   -o CMakeFiles/test.dir/src/test/main.cpp.o -c /home/zyp/src/code/src/test/main.cpp",
-  "file": "/home/zyp/src/code/src/test/main.cpp"
+  "directory": "/home/zyp/git/server/new_code/code/build",
+  "command": "/usr/bin/g++  -I/home/zyp/git/server/new_code/code/build -I/home/zyp/git/server/new_code/code/include -I/home/zyp/git/server/new_code/code/include/proto -g -o CMakeFiles/client.dir/src/client/client.cpp.o -c /home/zyp/git/server/new_code/code/src/client/client.cpp",
+  "file": "/home/zyp/git/server/new_code/code/src/client/client.cpp"
 },
 {
-  "directory": "/home/zyp/src/code/build",
-  "command": "/usr/bin/g++   -I/home/zyp/src/code/build -I/home/zyp/src/code/include -I/home/zyp/src/code/include/proto  -g   -o CMakeFiles/server.dir/src/server/server.cpp.o -c /home/zyp/src/code/src/server/server.cpp",
-  "file": "/home/zyp/src/code/src/server/server.cpp"
+  "directory": "/home/zyp/git/server/new_code/code/build",
+  "command": "/usr/bin/g++  -I/home/zyp/git/server/new_code/code/build -I/home/zyp/git/server/new_code/code/include -I/home/zyp/git/server/new_code/code/include/proto -g -o CMakeFiles/client.dir/msg.pb.cc.o -c /home/zyp/git/server/new_code/code/build/msg.pb.cc",
+  "file": "/home/zyp/git/server/new_code/code/build/msg.pb.cc"
 },
 {
-  "directory": "/home/zyp/src/code/build",
-  "command": "/usr/bin/g++   -I/home/zyp/src/code/build -I/home/zyp/src/code/include -I/home/zyp/src/code/include/proto  -g   -o CMakeFiles/server.dir/msg.pb.cc.o -c /home/zyp/src/code/build/msg.pb.cc",
-  "file": "/home/zyp/src/code/build/msg.pb.cc"
+  "directory": "/home/zyp/git/server/new_code/code/build",
+  "command": "/usr/bin/g++  -I/home/zyp/git/server/new_code/code/build -I/home/zyp/git/server/new_code/code/include -I/home/zyp/git/server/new_code/code/include/proto -g -o CMakeFiles/server.dir/src/server/server.cpp.o -c /home/zyp/git/server/new_code/code/src/server/server.cpp",
+  "file": "/home/zyp/git/server/new_code/code/src/server/server.cpp"
 },
 {
-  "directory": "/home/zyp/src/code/build",
-  "command": "/usr/bin/g++   -I/home/zyp/src/code/build -I/home/zyp/src/code/include -I/home/zyp/src/code/include/proto  -g   -o CMakeFiles/client.dir/src/client/client.cpp.o -c /home/zyp/src/code/src/client/client.cpp",
-  "file": "/home/zyp/src/code/src/client/client.cpp"
+  "directory": "/home/zyp/git/server/new_code/code/build",
+  "command": "/usr/bin/g++  -I/home/zyp/git/server/new_code/code/build -I/home/zyp/git/server/new_code/code/include -I/home/zyp/git/server/new_code/code/include/proto -g -o CMakeFiles/server.dir/msg.pb.cc.o -c /home/zyp/git/server/new_code/code/build/msg.pb.cc",
+  "file": "/home/zyp/git/server/new_code/code/build/msg.pb.cc"
 },
 {
-  "directory": "/home/zyp/src/code/build",
-  "command": "/usr/bin/g++   -I/home/zyp/src/code/build -I/home/zyp/src/code/include -I/home/zyp/src/code/include/proto  -g   -o CMakeFiles/client.dir/msg.pb.cc.o -c /home/zyp/src/code/build/msg.pb.cc",
-  "file": "/home/zyp/src/code/build/msg.pb.cc"
+  "directory": "/home/zyp/git/server/new_code/code/build",
+  "command": "/usr/bin/g++  -I/home/zyp/git/server/new_code/code/build -I/home/zyp/git/server/new_code/code/include -I/home/zyp/git/server/new_code/code/include/proto -g -o CMakeFiles/test.dir/src/test/main.cpp.o -c /home/zyp/git/server/new_code/code/src/test/main.cpp",
+  "file": "/home/zyp/git/server/new_code/code/src/test/main.cpp"
 }
 ]
