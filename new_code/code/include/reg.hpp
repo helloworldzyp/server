@@ -80,3 +80,23 @@ int HandMsg(int cScoket){
     }
     return ret;
 }
+
+::google::protobuf::Message* CreateMeaage(std::string msgName){
+    using namespace ::google::protobuf;
+    Message* message = nullptr;
+    const Descriptor *des = DescriptorPool::generated_pool()->FindMessageTypeByName(msgName);
+    if (des){
+        const Message* protoType = MessageFactory::generated_factory()->GetPrototype(des);
+        if (protoType){
+            message = protoType->New();
+        }
+    }
+    return message;
+}
+
+
+void testProtobuf()
+{
+    ::google::protobuf::Message* message = CreateMeaage("ChatMsg");
+    std::cout<<message<<std::endl;
+}
