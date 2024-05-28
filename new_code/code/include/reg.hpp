@@ -63,7 +63,7 @@ void HandMsg(uint32_t msgID,char* buf){
     }
 }
 
-void HandMsg(int cScoket){
+int HandMsg(int cScoket){
     char buff[64 * 1024] = {0};
     int ret = Readn(cScoket, buff, sizeof(MsgHead));
     if (ret == g_headMsgSize){
@@ -77,4 +77,5 @@ void HandMsg(int cScoket){
             }
         }
     }
+    return ret;
 }
