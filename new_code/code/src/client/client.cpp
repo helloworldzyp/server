@@ -36,7 +36,7 @@ void test_func(){
 
 int main(){
 	init();
-	for (int i = 0; i < 100; i++){
+	for (int i = 0; i < 1025; i++){
 		test_func();
 	}
 }
