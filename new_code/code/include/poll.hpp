@@ -158,7 +158,7 @@ void Epoll::Update()
 {
 
     typedef std::vector<struct epoll_event> EventList;
-    EventList events_;
+    EventList events_(1000);
 
     struct epoll_event events[1024];
     struct sockaddr_in address;
@@ -184,14 +184,16 @@ void Epoll::Update()
 
     while (true) {
       
-        int nfds = epoll_wait(epoll_fd, events, 100, -1);
+        // int nfds = epoll_wait(epoll_fd, events, 100, -1);
+        int nfds = epoll_wait(epoll_fd,&*events_.begin(),events_.size(),-1);
         if (nfds < 0) {
             perror("epoll_wait error");
             break;
         }
+        std::cout<<"$$$$ size "<<nfds<<std::endl;
 
         for (int i = 0; i < nfds; i++) {
-            if (events[i].data.fd == m_socket) {
+            if (events_[i].data.fd == m_socket) {
                 if ((new_socket = accept(m_socket, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
                     perror("accept");
                     continue;
@@ -207,7 +209,7 @@ void Epoll::Update()
                     continue;
                 }
             } else {
-                int client_fd = events[i].data.fd;
+                int client_fd = events_[i].data.fd;
                 int ret = HandMsg(client_fd);
                 if (ret == -1 || ret == 0){
                     close(client_fd);
