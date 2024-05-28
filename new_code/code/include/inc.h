@@ -19,6 +19,7 @@
 #include <algorithm>
 #include"msg.pb.h"
 #include"buildmsg.hpp"
+#include<sys/epoll.h>
 
 #define CHECK_RET(x) if (x < 0) exit(1)
 

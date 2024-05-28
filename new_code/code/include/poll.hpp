@@ -89,6 +89,22 @@ class Select : public Poller
         int m_socket = -1;
 };
 
+class Epoll : public Poller
+{
+    public:
+        Epoll(int s){
+            m_socket = s;
+        }
+        ~Epoll(){}
+    public:
+        void Update();
+    private:
+        std::vector<int> m_csvec;
+        int m_socket = -1;
+};
+
+
+
 void Select::Update()
 {
     sockaddr_in client;
@@ -120,14 +136,15 @@ void Select::Update()
 		}
 		for (auto v : m_csvec){
 			if (FD_ISSET(v, &readSet)){
-				ret = HandMsg(cScoket);
+				ret = HandMsg(v);
 				if (ret == 0){
-					removeVec.push_back(cScoket);
-					close(cScoket);
-					std::cout<<"close client "<<cScoket<<std::endl;
+					removeVec.push_back(v);
+					close(v);
+					std::cout<<"close client "<<v<<std::endl;
 				}
 			}
 		}
+        std::cout<<"client size = "<<m_csvec.size()<<std::endl;
 		for (auto v : removeVec){
 			auto it = std::find_if(m_csvec.begin(),m_csvec.end(),[v](int temp){
 				return temp == v;
@@ -137,6 +154,72 @@ void Select::Update()
 	}
 }
 
+void Epoll::Update()
+{
 
+    typedef std::vector<struct epoll_event> EventList;
+    EventList events_;
+
+    struct epoll_event events[1024];
+    struct sockaddr_in address;
+    int addrlen = sizeof(address);
+    int epoll_fd,new_socket;
+    // std::vector<epoll_event> events;
+    struct epoll_event ev;
+
+    if ((epoll_fd = epoll_create1(0)) < 0) {
+        perror("epoll_create1 failed");
+        close(m_socket);
+        exit(EXIT_FAILURE);
+    }
+
+    ev.events = EPOLLIN;
+    ev.data.fd = m_socket;
+    if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, m_socket, &ev) < 0) {
+        perror("epoll_ctl failed");
+        close(m_socket);
+        close(epoll_fd);
+        exit(EXIT_FAILURE);
+    }
+
+    while (true) {
+      
+        int nfds = epoll_wait(epoll_fd, events, 100, -1);
+        if (nfds < 0) {
+            perror("epoll_wait error");
+            break;
+        }
+
+        for (int i = 0; i < nfds; i++) {
+            if (events[i].data.fd == m_socket) {
+                if ((new_socket = accept(m_socket, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
+                    perror("accept");
+                    continue;
+                }
+            char client_ip[INET_ADDRSTRLEN] = {0};
+			const char *client_ip_str = inet_ntop(AF_INET, &address.sin_addr, client_ip, INET_ADDRSTRLEN);
+    		std::cout<<"Accepted connection from " << client_ip_str<< " port "<<ntohs(address.sin_port)<<std::endl;
+                ev.events = EPOLLIN | EPOLLET;
+                ev.data.fd = new_socket;
+                if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, new_socket, &ev) < 0) {
+                    perror("epoll_ctl: new_socket");
+                    close(new_socket);
+                    continue;
+                }
+            } else {
+                int client_fd = events[i].data.fd;
+                int ret = HandMsg(client_fd);
+                if (ret == -1 || ret == 0){
+                    close(client_fd);
+                    epoll_ctl(epoll_fd, EPOLL_CTL_DEL, client_fd, NULL);
+                }
+            }
+        }
+    }
+
+    close(m_socket);
+    close(epoll_fd);
+
+}
 
 

@@ -64,6 +64,7 @@ void HandMsg(uint32_t msgID,char* buf){
 }
 
 int HandMsg(int cScoket){
+    std::cout<<"handle msg client id = "<<cScoket<<std::endl;
     char buff[64 * 1024] = {0};
     int ret = Readn(cScoket, buff, sizeof(MsgHead));
     if (ret == g_headMsgSize){

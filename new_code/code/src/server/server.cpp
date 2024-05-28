@@ -27,8 +27,11 @@ int main(){
 	ret = Listen(sScoket);
 	CHECK_RET(ret);
 
-	Select sel(sScoket);
-	sel.Update();
+	// Select sel(sScoket);
+	// sel.Update();
+
+	Epoll po(sScoket);
+	po.Update();
 
 	// sockaddr_in client;
 	// int len = sizeof(client);
