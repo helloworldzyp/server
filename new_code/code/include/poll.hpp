@@ -13,6 +13,22 @@ class noncopyable
   ~noncopyable() = default;
 };
 
+
+
+void test_getsockname(int socketid,int clientid){
+    struct sockaddr_in server_local_addr;
+    socklen_t server_local_addr_len = sizeof(server_local_addr);
+    getsockname(socketid, (struct sockaddr*)&server_local_addr, &server_local_addr_len);
+    std::cout << "服务器本地地址和端口: " << inet_ntoa(server_local_addr.sin_addr) << ":" << ntohs(server_local_addr.sin_port) << std::endl;
+
+    // 获取客户端套接字的远程对等体地址和端口
+    struct sockaddr_in client_peer_addr;
+    socklen_t client_peer_addr_len = sizeof(client_peer_addr);
+    getpeername(clientid, (struct sockaddr*)&client_peer_addr, &client_peer_addr_len);
+    std::cout << "客户端远程对等体地址和端口: " << inet_ntoa(client_peer_addr.sin_addr) << ":" << ntohs(client_peer_addr.sin_port) << std::endl;
+
+}
+
 class Poller : public noncopyable
 {
     public:
@@ -70,7 +86,7 @@ void Select::Update()
 		}
 
 		auto max_it = std::max_element(m_csvec.begin(), m_csvec.end());
-		int ret = select(*max_it + 1,&readSet,nullptr,nullptr,0);
+		int ret = select(*max_it + 1,&readSet,nullptr,nullptr,0); //(立即返回)   //永远等待下去：设为空指针  等待一段固定时间 立即返回(轮询)：timeval结构中的时间设为0
 		CHECK_RET(ret);
 		if (FD_ISSET(m_socket,&readSet)){ //有客户端连接
 			cScoket = Accept(m_socket, (sockaddr*)&client, &len);
@@ -144,9 +160,10 @@ void Epoll::Update()
                     perror("accept");
                     continue;
                 }
-            char client_ip[INET_ADDRSTRLEN] = {0};
-			const char *client_ip_str = inet_ntop(AF_INET, &address.sin_addr, client_ip, INET_ADDRSTRLEN);
-    		std::cout<<"Accepted connection from " << client_ip_str<< " port "<<ntohs(address.sin_port)<<std::endl;
+                test_getsockname(m_socket,new_socket);
+                char client_ip[INET_ADDRSTRLEN] = {0};
+			    const char *client_ip_str = inet_ntop(AF_INET, &address.sin_addr, client_ip, INET_ADDRSTRLEN);
+    		    std::cout<<"Accepted connection from " << client_ip_str<< " port "<<ntohs(address.sin_port)<<std::endl;
                 ev.events = EPOLLIN | EPOLLET;
                 ev.data.fd = new_socket;
                 if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, new_socket, &ev) < 0) {
@@ -169,5 +186,7 @@ void Epoll::Update()
     close(epoll_fd);
 
 }
+
+
 
 

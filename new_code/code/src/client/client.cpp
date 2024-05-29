@@ -11,7 +11,7 @@ void test_func(){
 
 	peer.sin_family = AF_INET;
 	peer.sin_port = htons( 7500 );
-	peer.sin_addr.s_addr = inet_addr( "127.0.0.1" );
+	peer.sin_addr.s_addr = inet_addr( "172.23.54.36" );
 
 	s = Socket();
 	std::cout<<"$$$$$ client socket id = "<<s<<std::endl;
@@ -36,7 +36,7 @@ void test_func(){
 
 int main(){
 	init();
-	for (int i = 0; i < 1025; i++){
+	for (int i = 0; i < 1; i++){
 		test_func();
 	}
 }

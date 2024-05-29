@@ -13,7 +13,7 @@ int main(){
 
 	local.sin_family = AF_INET;
 	local.sin_port = htons( 7500 );
-	local.sin_addr.s_addr = htons(INADDR_ANY);
+	local.sin_addr.s_addr = inet_addr("172.23.54.36");//htons(INADDR_ANY);
 	sScoket = Socket();
 	CHECK_RET(sScoket);
 	std::cout<<"$$$$$ server s = "<<sScoket<<std::endl;
