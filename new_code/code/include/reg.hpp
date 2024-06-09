@@ -40,7 +40,7 @@ void RegFunc(uint32_t msgID, ::google::protobuf::Message *message, HandleFunc fu
     g_commandMap[msgID] = msgInfo;
 }
 
-void init(){
+void initRegMsg(){
     RegFunc(eMsgType_login,new MyLoginMsg,HandleLogin);
     RegFunc(eMsgType_chat,new ChatMsg,HandleChat);
     RegFunc(eMsgType_mutil_chat,new MutilChatMsg,HandleMutilChat);

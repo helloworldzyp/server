@@ -4,34 +4,50 @@
 
 #define INVAILD_NUM  -1
 
-int main(){
-	init();
+class Server{
+	public:
+		Server(std::string strIP,int port,bool isepoll):m_str_ip(strIP),m_port(port){
+			initRegMsg();
+			init();
+			if (isepoll){
+				m_poll = new Epoll(m_socket);
+			}
+			else{
+				m_poll = new Select(m_socket);
+			}
+		};
+		~Server() = default;
+	public:
+		void init();
+		void start();
+	private:
+		std::string m_str_ip = "0.0.0.0";
+		int m_port = 7500;
+		int m_socket = -1;
+		Poller *m_poll = nullptr;
+};
+
+void Server::init(){
     struct sockaddr_in local;
-	int sScoket = -1;
-	int cScoket = -1;
-	int ret = -1;
-
 	local.sin_family = AF_INET;
-	local.sin_port = htons( 7500 );
-	local.sin_addr.s_addr = inet_addr("172.23.54.36");//htons(INADDR_ANY);
-	sScoket = Socket();
-	CHECK_RET(sScoket);
-	std::cout<<"$$$$$ server s = "<<sScoket<<std::endl;
-
+	local.sin_port = htons( m_port );
+	local.sin_addr.s_addr = inet_addr(m_str_ip.data());//htons(INADDR_ANY);
+	m_socket = Socket();
 	int optval = 1;
-	ret = setsockopt(sScoket, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+	int ret = setsockopt(m_socket, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
 	CHECK_RET(ret);
-
-	ret = Bind(sScoket,local);
+	ret = Bind(m_socket,local);
 	CHECK_RET(ret);
-	ret = Listen(sScoket);
+	ret = Listen(m_socket);
 	CHECK_RET(ret);
+	
+}
 
-	// Select sel(sScoket);
-	// sel.Update();
+void Server::start(){
+	m_poll->Update();
+}
 
-	Epoll po(sScoket);
-	po.Update();
-
-	std::cout<<"server1 "<<std::endl;
+int main(){
+	Server s("0.0.0.0",7500,true);
+	s.start();
 }

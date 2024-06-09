@@ -34,7 +34,7 @@ class Poller : public noncopyable
     public:
         Poller(){}
         ~Poller(){}
-        virtual void Update() = 0;
+        virtual void Update(){std::cout<<"not complete"<<std::endl;};
 };
 
 class Select : public Poller
@@ -69,6 +69,7 @@ class Epoll : public Poller
 
 void Select::Update()
 {
+    std::cout<<"this is select update"<<std::endl;
     sockaddr_in client;
 	int len = sizeof(client);
     int cScoket = 0;
@@ -118,7 +119,7 @@ void Select::Update()
 
 void Epoll::Update()
 {
-
+    std::cout<<"this is epoll update"<<std::endl;
     typedef std::vector<struct epoll_event> EventList;
     EventList events_(1000);
 

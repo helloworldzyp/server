@@ -2,41 +2,56 @@
 #include"reg.hpp"
 #include"msg.pb.h"
 
+class Client{
+	public:
+		Client(std::string strIP,int port):m_str_ip(strIP),m_port(port){
+			initRegMsg();
+			init();
+		};
+		~Client() = default;
+	public:
+		void init();
+		void start();
+	private:
+		int m_thread_count = 1;
+		std::string m_str_ip = "127.0.0.1";
+		int m_port = 7500;
+		int m_soketid = -1;
+};
 
-void test_func(){
+void Client::init(){
 	struct sockaddr_in peer;
-	int s;
-	int rc;
-	char buf[ 1 ];
-
 	peer.sin_family = AF_INET;
-	peer.sin_port = htons( 7500 );
-	peer.sin_addr.s_addr = inet_addr( "172.23.54.36" );
+	peer.sin_port = htons(m_port);
+	peer.sin_addr.s_addr = inet_addr(m_str_ip.c_str());
+	m_soketid = Socket();
+	Connect(m_soketid,peer);
+}
 
-	s = Socket();
-	std::cout<<"$$$$$ client socket id = "<<s<<std::endl;
-	CHECK_RET(s);
-	rc = Connect(s,peer);
-	CHECK_RET(rc);
-
+void Client::start(){
 	for (int i = 0; i < 1; i++){
 		std::string sendStr = BuildLoginMsg("test", 99);
-		int ret = send(s, sendStr.c_str(), sendStr.size(), 0);
-		// std::cout << "client send len=" << ret << std::endl;
+		int ret = send(m_soketid, sendStr.c_str(), sendStr.size(), 0);
+
 		sendStr = BuildChatMsg("this is chat msg");
-		ret = send(s, sendStr.c_str(), sendStr.size(), 0);
-		// std::cout << "client send len=" << ret << std::endl;
+		ret = send(m_soketid, sendStr.c_str(), sendStr.size(), 0);
 		std::cout << "i = " << i << std::endl;
-		usleep(100000);
+		
 		std::vector<std::string> mutilChat = {"123", "test", "asd"};
 		sendStr = BuildMutilChatMsg(mutilChat);
-		ret = send(s, sendStr.c_str(), sendStr.size(), 0);
+		ret = send(m_soketid, sendStr.c_str(), sendStr.size(), 0);
+		sleep(2);
 	}
 }
 
+
+void test_func(){
+	Client c("172.23.54.36",7500);
+	c.start();
+}
+
 int main(){
-	init();
-	for (int i = 0; i < 1; i++){
+	for (int i = 0; i < 10; i++){
 		test_func();
 	}
 }

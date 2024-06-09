@@ -3,3 +3,5 @@
 /.vscode/
 new_code/code/build/
 new_code/.vscode/
+new_code/code/bin/client
+new_code/code/bin/server
