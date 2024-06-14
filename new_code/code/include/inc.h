@@ -121,6 +121,49 @@ ssize_t Writen(int fd, const void *buf, size_t n) {
 
 
 
+// //0------readindex------writeindex-------capacity
+// class Buff{
+//     public:
+//         Buff():m_buff(1){}
+//         ~Buff(){m_buff.clear();}
+//         char* beginRead(){
+//             return &*m_buff.begin() + m_read_index;
+//         }
+//         char* beginWrite(){
+//             return &*m_buff.begin() + m_write_index;
+//         }
+//         void makeSpace(int len){
+//             m_buff.resize(len);
+//         }
+//         bool isFull(){return m_write_index == m_buff.capacity();}
+//         int canWriteSize(){return m_buff.capacity() - m_write_index;}
+//         int canReadSize(){return m_write_index - m_read_index;}
+//         int writeString(std::string str){
+//             if (canWriteSize() < str.size()){
+//                 makeSpace(str.size());
+//                 std::cout<<"alloc memory"<<std::endl;
+//             }
+//             memcpy(beginWrite(),str.data(),str.size());
+//             m_write_index += str.size();
+//             return str.size();
+//         }
+//         int readString(std::string &str,int len){
+//             assert(canReadSize() >= len);
+//             // str.assign(beginRead(),len);
+//             memcpy(str.data(),beginRead(),len);
+//             m_read_index += len;
+//             return len;
+//         }
+//         void debug(){
+//             std::string buf(&*m_buff.begin(),m_buff.size());
+//             std::cout<<"debug buff is "<<buf<<std::endl;
+//         }
+//     private:
+//         std::vector<char> m_buff;
+//         int m_read_index = 0;
+//         int m_write_index = 0;
+// };
+
 
 
 
