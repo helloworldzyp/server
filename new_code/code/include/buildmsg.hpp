@@ -1,6 +1,7 @@
 #pragma once
 #include"inc.h"
 
+
 ///////////////////////proto //////////////
 struct MsgHead{
     int dataLen;

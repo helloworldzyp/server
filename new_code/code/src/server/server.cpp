@@ -10,7 +10,8 @@ class Server{
 			initRegMsg();
 			init();
 			if (isepoll){
-				m_poll = new Epoll(m_socket);
+				// m_poll = new Epoll(m_socket);
+				m_poll = new EpollHelper();
 			}
 			else{
 				m_poll = new Select(m_socket);
@@ -44,6 +45,8 @@ void Server::init(){
 }
 
 void Server::start(){
+	auto func = FuncPackage(HandleAccept,m_socket,(EpollHelper*)m_poll);
+	((EpollHelper*)m_poll)->AddFD(m_socket,EPOLLIN,func);
 	m_poll->Update();
 }
 

@@ -8,7 +8,7 @@ class Client{
 			initRegMsg();
 			init();
 		};
-		~Client() = default;
+		~Client(){close(m_soketid);};
 	public:
 		void init();
 		void start();
@@ -46,12 +46,12 @@ void Client::start(){
 
 
 void test_func(){
-	Client c("172.23.54.36",7500);
+	Client c("127.0.0.1",7500);
 	c.start();
 }
 
 int main(){
-	for (int i = 0; i < 10; i++){
+	for (int i = 0; i < 1; i++){
 		test_func();
 	}
 }

@@ -1,6 +1,9 @@
 #pragma once
 #include"reg.hpp"
 #include"inc.h"
+#include<map>
+#include<vector>
+#include<functional>
 
 class noncopyable
 {
@@ -188,6 +191,111 @@ void Epoll::Update()
 
 }
 
+typedef std::function<void()> CommonFunc;
+template<typename F, typename... A>
+CommonFunc FuncPackage(F f, A... argc) {
+	using FuncType = decltype(f(argc...));
+	auto tempFunc = std::bind(std::forward<F>(f), std::forward<A>(argc)...);
+	return tempFunc;
+}
 
+class EpollHelper : public Poller{
+    struct IO_EVENT{
+         int event;
+         CommonFunc readFunc;
+         CommonFunc writeFunc;
+    };
+    public:
+        EpollHelper() : m_poll_fd(epoll_create1(EPOLL_CLOEXEC)),m_poll_events(1024){}
+        ~EpollHelper(){close(m_poll_fd);}
+    public:
+        void AddFD(int fd,int event,const CommonFunc& cb);
+        void DelFD(int fd);
+        void Update();
+        void HandleIO(int cn);
+    private:
+        bool m_stop = false;
+        int m_poll_fd = -1;
+        std::map<int,IO_EVENT> m_io_events;    //fd ---> events
+        std::vector<epoll_event> m_poll_events; //for epoll_wait use
+};
 
+void EpollHelper::AddFD(int fd,int event,const CommonFunc& cb){
+    auto &events = m_io_events[fd];
+    int tempEvent = event | events.event;
+    int op = events.event == 0 ? EPOLL_CTL_ADD : EPOLL_CTL_MOD;
+    if (event & EPOLLIN){
+        events.readFunc = cb;
+    }
+    else if (event & EPOLLOUT){
+        events.writeFunc = cb;        
+    }
+    epoll_event ev;
+    ev.data.fd = fd;
+    ev.events = tempEvent;
+    int ret = epoll_ctl(m_poll_fd,op,fd,&ev);
+    if (-1 == ret){
+        std::cout<<"AddFD error"<<std::endl;
+    }
+}
+
+void EpollHelper::DelFD(int fd){
+    m_io_events.erase(fd);
+    int ret = epoll_ctl(m_poll_fd,EPOLL_CTL_DEL,fd,nullptr);
+    if (-1 == ret){
+        std::cout<<"DelFD error"<<std::endl;
+    }
+}
+
+void EpollHelper::HandleIO(int cn){
+    for (int i = 0; i < cn; i++){
+        epoll_event ev = m_poll_events[i];
+        auto it = m_io_events.find(ev.data.fd);
+        if (it != m_io_events.end()){
+            if (ev.events & EPOLLIN){
+                it->second.readFunc();
+            }
+            else if (ev.events & EPOLLIN){
+                it->second.writeFunc();
+            }
+            else{
+                DelFD(ev.data.fd);
+            }
+        }
+    }
+}
+
+void EpollHelper::Update(){
+    while(!m_stop){
+        int cn = epoll_wait(m_poll_fd,&*m_poll_events.begin(),m_poll_events.size(),-1);
+        if (cn > 0){
+            std::cout<<"handle io "<<cn<<std::endl;
+            HandleIO(cn);
+        }
+    }
+}
+
+void HandleMsg(int sockfd){
+    int ret = HandMsg(sockfd);
+    if (ret == -1 || ret == 0){
+        close(sockfd);
+    }
+}
+
+void HandleAccept(int sockfd,EpollHelper* epoller){
+    std::cout<<"handle accept"<<std::endl;
+    int new_socket = -1;
+    sockaddr_in address;
+    int addrlen = sizeof(sockaddr_in);
+    if ((new_socket = accept(sockfd, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0){
+        perror("accept");
+    }
+    test_getsockname(sockfd, new_socket);
+    char client_ip[INET_ADDRSTRLEN] = {0};
+    const char *client_ip_str = inet_ntop(AF_INET, &address.sin_addr, client_ip, INET_ADDRSTRLEN);
+    std::cout << "Accepted connection from " << client_ip_str << " port " << ntohs(address.sin_port) << std::endl;
+
+    auto func = FuncPackage(HandleMsg,new_socket);
+    epoller->AddFD(new_socket,EPOLLIN,func);
+}
 

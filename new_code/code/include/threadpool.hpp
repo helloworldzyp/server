@@ -70,11 +70,13 @@ public:
         m_tasks.addTask(func,argc...);
         m_conditon_var.notify_one();
     }
-    void addThread(int size){
-        for (int i = 0; i < size; i++){
-            m_threads.emplace_back([&](){
-                if (m_run){
-                    while(true){
+    void addThread(int size)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            m_threads.emplace_back([&]()
+                                   {
+                    while(m_run){
                         {
                             std::unique_lock<std::mutex> l(m_lock);
                             m_conditon_var.wait(l,[&](){
@@ -84,11 +86,10 @@ public:
                             task();
                             m_tasks.m_task_quene.pop();
                         }
-                    }
-                }
-            });
+                    } });
         }
     }
+
 private:
     std::atomic<bool> m_run = true;
     std::atomic<int> m_sleep_thread_cn = 0;

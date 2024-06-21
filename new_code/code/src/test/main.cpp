@@ -1,6 +1,8 @@
 #include"test.hpp"
 #include<vector>
 #include<string>
+#include<functional>
+#include"threadpool.hpp"
 
 using namespace std;
 void func()
@@ -18,9 +20,9 @@ void func(char* str,int len){
 
 int main(int argc,char *argv[])
 {
-
-     char str[10] = {'a','b','c'};
-     func(str,10);
+   test_task();
+    //  char str[10] = {'a','b','c'};
+    //  func(str,10);
     // int threadCount = 2;
     // if (argc == 2){
     //     threadCount = atoi(argv[1]);

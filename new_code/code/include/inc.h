@@ -20,6 +20,7 @@
 #include"msg.pb.h"
 #include"buildmsg.hpp"
 #include<sys/epoll.h>
+#include<functional>
 
 #define CHECK_RET(x) if (x < 0) exit(1)
 
@@ -120,7 +121,6 @@ ssize_t Writen(int fd, const void *buf, size_t n) {
 }
 
 
-
 // //0------readindex------writeindex-------capacity
 // class Buff{
 //     public:
@@ -163,6 +163,7 @@ ssize_t Writen(int fd, const void *buf, size_t n) {
 //         int m_read_index = 0;
 //         int m_write_index = 0;
 // };
+
 
 
 
